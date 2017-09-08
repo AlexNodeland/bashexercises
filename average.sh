@@ -7,12 +7,35 @@
 #    Round output to 3 digits after the decimal
 #    Include trailing zeros
 
+#Set variables
 N=$1
-ARRAY=$@
+NMAX=500
+NMIN=1
+XMAX=10000
+XMIN=-10000
+ARRAY="$@"
 sum=0
-for element in ${ARRAY[@]}; do
-    sum=$(($sum+$element))
+IFS=$'\n'
+echo "${ARRAY[*]:2}" | sort -nr | head -n1
+exit
+
+#Check if bounds are satisfied for N value
+if [[ $N -gt $NMAX ]] || [[ $N -lt $NMIN ]]; then
+    echo "$0: Please enter i1-500 elements"
+    exit -1
+fi
+
+#Check if bounds are satisfied for x values
+if [[ $MIN -lt $XMIN ]] || [[ $MAX -gt $XMAX ]]; then
+    echo "$0: Please enter only elements between -10,000-10,000"
+    exit -1
+fi
+
+#Calculate sum
+for element in ${ARRAY[@]}; do   #Iterate through all elements of array
+    sum=$(($sum+$element))       #"+=" is not a valid expression in BASH
 done
-sum=$(($sum-$N))
-avg=$(($sum/($N)))
-echo "$avg"
+
+sum=$(($sum-$N))    #Remove first element
+avg=$(($sum/($N)))  #Calculate average  
+echo "$avg"         #Print average to stdout
